@@ -13,6 +13,8 @@ libraryDependencies ++= List(
   Library.scopt,
   Library.scaldi,
   Library.slick,
+  Library.slickPG,
+  Library.slickPGSprayJson,
   Library.scalaTest                % "test",
   Library.akkaTestKit              % "test"
 )

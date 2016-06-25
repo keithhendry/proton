@@ -16,6 +16,7 @@ object Version {
   final val Csv                      = "0.1.11"
   final val ScalaTest                = "2.2.6"
   final val Slick                    = "3.1.1"
+  final val SlickPG                  = "0.14.1"
 }
 
 object Library {
@@ -44,4 +45,6 @@ object Library {
   val scalaTest                = "org.scalatest"              %% "scalatest"                            % Version.ScalaTest
   val akkaTestKit              = "com.typesafe.akka"          %% "akka-testkit"                         % Version.Akka
   val slick                    = "com.typesafe.slick"         %% "slick"                                % Version.Slick
+  val slickPG                  = "com.github.tminglei"        %% "slick-pg"                             % Version.SlickPG
+  val slickPGSprayJson         = "com.github.tminglei"        %% "slick-pg_spray-json"                  % Version.SlickPG
 }
