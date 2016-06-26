@@ -17,6 +17,9 @@ object Version {
   final val ScalaTest                = "2.2.6"
   final val Slick                    = "3.1.1"
   final val SlickPG                  = "0.14.1"
+  final val HikariCP                 = "2.4.6"
+  final val Postgresql               = "9.4.1208"
+  final val Flyway                   = "4.0.3"
 }
 
 object Library {
@@ -45,6 +48,9 @@ object Library {
   val scalaTest                = "org.scalatest"              %% "scalatest"                            % Version.ScalaTest
   val akkaTestKit              = "com.typesafe.akka"          %% "akka-testkit"                         % Version.Akka
   val slick                    = "com.typesafe.slick"         %% "slick"                                % Version.Slick
+  val slickHikariCP            = "com.typesafe.slick"         %% "slick-hikaricp"                       % Version.Slick
   val slickPG                  = "com.github.tminglei"        %% "slick-pg"                             % Version.SlickPG
-  val slickPGSprayJson         = "com.github.tminglei"        %% "slick-pg_spray-json"                  % Version.SlickPG
+  val hikariCP                 = "com.zaxxer"                 % "HikariCP"                              % Version.HikariCP
+  val postgresql               = "org.postgresql"             % "postgresql"                            % Version.Postgresql
+  val flyway                   = "org.flywaydb"               % "flyway-core"                           % Version.Flyway
 }
