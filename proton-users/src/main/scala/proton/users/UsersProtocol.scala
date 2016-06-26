@@ -7,7 +7,10 @@ import java.util.UUID
 
 import spray.json.{JsValue, JsonFormat, _}
 
-trait UsersProtocol {
+trait UsersProtocol extends DefaultJsonProtocol {
+  import spray.json._
+  import Models._
+
   private def getStackTrace(t: Throwable) = {
     val sw: StringWriter = new StringWriter()
     val pw: PrintWriter = new PrintWriter(sw)
@@ -56,4 +59,9 @@ trait UsersProtocol {
       case _ => deserializationError("LocalDateTime expected.")
     }
   }
+
+  implicit val userFormat = jsonFormat3(User.apply)
+  implicit val groupFormat = jsonFormat2(Group.apply)
+  implicit val orgFormat = jsonFormat2(Organization.apply)
+  implicit val resourceFormat = jsonFormat4(Resource.apply)
 }

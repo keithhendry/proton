@@ -9,10 +9,10 @@ trait Models {
   class Users(tag: Tag) extends Table[User](tag, "USERS") {
     def id = column[UUID]("ID", O.PrimaryKey)
     def name = column[String]("NAME")
-    def organizationId = column[Option[UUID]]("ORG_ID")
-    def organization = foreignKey("ORG_FK", organizationId, organizationsQuery)(_.id.?,
+    def organizationId = column[UUID]("ORG_ID")
+    def organization = foreignKey("ORG_FK", organizationId, organizationsQuery)(_.id,
       onUpdate = ForeignKeyAction.Restrict)
-    def * = (id, name, organizationId) <>(User.tupled, User.unapply)
+    def * = (id, name, organizationId.?) <> (User.tupled, User.unapply)
   }
   val usersQuery = TableQuery[Users]
 
@@ -20,7 +20,7 @@ trait Models {
   class Groups(tag: Tag) extends Table[Group](tag, "GROUPS") {
     def id = column[UUID]("ID", O.PrimaryKey)
     def name = column[String]("NAME")
-    def * = (id, name) <>(Group.tupled, Group.unapply)
+    def * = (id, name) <> (Group.tupled, Group.unapply)
   }
   val groupsQuery = TableQuery[Groups]
 
@@ -47,8 +47,9 @@ trait Models {
     def playerId = column[UUID]("ID", O.PrimaryKey)
     def resType = column[UUID]("TYPE")
     def props = column[Map[String, String]]("PROPS_HSTORE")
-    def * = (id, playerId, resType, props) <>(Resource.tupled, Resource.unapply)
+    def * = (id, playerId, resType, props) <> (Resource.tupled, Resource.unapply)
   }
   val resourcesQuery = TableQuery[Resources]
-
 }
+
+object Models extends Models

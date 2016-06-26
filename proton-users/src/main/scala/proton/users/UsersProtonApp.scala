@@ -21,9 +21,10 @@ class UsersProtonModule(config: Config) extends Module {
   bind[ActorSystem] to ActorSystem("ProtonUsers", config) destroyWith (_.terminate())
   bind[JsonPrinter] to CompactPrinter
   bind[Database] to Database.forConfig("proton.db", config = config)
+  bind[UsersService] to injected[UsersService]
 }
 
-object UsersProtonApp extends App with Injectable with LazyLogging with SprayJsonSupport with UsersProtocol with Models {
+object UsersProtonApp extends App with Injectable with LazyLogging with SprayJsonSupport with UsersProtocol {
   ProtonConfig.parse("users-dev.conf", args).foreach(c => {
     val config = c.config
     implicit val injector = TypesafeConfigInjector(config) :: new UsersProtonModule(config)
@@ -37,8 +38,6 @@ object UsersProtonApp extends App with Injectable with LazyLogging with SprayJso
       config.getString("proton.db.password"))
     flyway.migrate()
 
-    implicit val database = inject[Database]
-
     implicit val exceptionHandler = ExceptionHandler {
       case e: Exception =>
         logger.error("HTTP unhandled exception.", e)
@@ -49,12 +48,7 @@ object UsersProtonApp extends App with Injectable with LazyLogging with SprayJso
         complete(InternalServerError -> Message(message, UsersEvents.Unhandled))
     }
 
-    def route: Route =
-      pathSingleSlash {
-        get {
-          complete("test")
-        }
-      }
+    def route: Route = inject[UsersService].route
 
     Http().bindAndHandle(route, config.getString("proton.ip"), config.getInt("proton.users.http.port"))
   })
