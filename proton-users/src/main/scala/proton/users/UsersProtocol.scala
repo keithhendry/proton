@@ -5,7 +5,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.UUID
 
-import spray.json.{JsValue, JsonFormat, _}
+import spray.json._
 
 trait UsersProtocol extends DefaultJsonProtocol {
   import spray.json._
@@ -54,14 +54,12 @@ trait UsersProtocol extends DefaultJsonProtocol {
 
   implicit object LocalDateTimeFormat extends JsonFormat[LocalDateTime] {
     def write(dateTime: LocalDateTime) = JsString(dateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
+
     def read(value: JsValue) = value match {
       case JsString(dateTime) => LocalDateTime.parse(dateTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
       case _ => deserializationError("LocalDateTime expected.")
     }
   }
 
-  implicit val userFormat = jsonFormat3(User.apply)
-  implicit val groupFormat = jsonFormat2(Group.apply)
-  implicit val orgFormat = jsonFormat2(Organization.apply)
-  implicit val resourceFormat = jsonFormat4(Resource.apply)
+  implicit val userFormat = rootFormat(jsonFormat4(User))
 }

@@ -12,12 +12,7 @@ libraryDependencies ++= List(
   Library.akkaHttpSprayJson,
   Library.scopt,
   Library.scaldi,
-  Library.slick,
-  Library.slickHikariCP,
-  Library.slickPG,
-  Library.hikariCP,
-  Library.postgresql,
-  Library.flyway,
+  Library.ldap,
   Library.scalaTest         % "test",
   Library.akkaTestKit       % "test"
 )

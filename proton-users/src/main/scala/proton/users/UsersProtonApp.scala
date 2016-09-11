@@ -9,8 +9,7 @@ import akka.http.scaladsl.server.{ExceptionHandler, Route}
 import akka.stream.ActorMaterializer
 import com.typesafe.config.Config
 import com.typesafe.scalalogging.LazyLogging
-import org.flywaydb.core.Flyway
-import proton.users.UsersPostgresDriver.api._
+import com.unboundid.ldap.sdk._
 import scaldi.{Injectable, Module, TypesafeConfigInjector}
 import spray.json.{CompactPrinter, JsonPrinter}
 
@@ -20,8 +19,13 @@ class UsersProtonModule(config: Config) extends Module {
   bind[ExecutionContext] to scala.concurrent.ExecutionContext.Implicits.global
   bind[ActorSystem] to ActorSystem("ProtonUsers", config) destroyWith (_.terminate())
   bind[JsonPrinter] to CompactPrinter
-  bind[Database] to Database.forConfig("proton.db", config = config)
   bind[UsersService] to injected[UsersService]
+
+  val connection = new LDAPConnection(config.getString("proton.ldap.host"), config.getInt("proton.ldap.port"))
+  val bindResult = connection.bind(config.getString("proton.ldap.bind-dn"), config.getString("proton.ldap.password"))
+  val connectionPool = new LDAPConnectionPool(connection, 1, config.getInt("proton.ldap.max-connections"))
+  bind[LDAPConnectionPool] to connectionPool
+  bind[Ldap] to new Ldap(connectionPool, config.getString("proton.ldap.base-dn"))
 }
 
 object UsersProtonApp extends App with Injectable with LazyLogging with SprayJsonSupport with UsersProtocol {
@@ -32,11 +36,6 @@ object UsersProtonApp extends App with Injectable with LazyLogging with SprayJso
     implicit val system = inject[ActorSystem]
     implicit val materializer = ActorMaterializer()
     implicit val printer = inject[JsonPrinter]
-
-    val flyway = new Flyway()
-    flyway.setDataSource(config.getString("proton.db.url"), config.getString("proton.db.user"),
-      config.getString("proton.db.password"))
-    flyway.migrate()
 
     implicit val exceptionHandler = ExceptionHandler {
       case e: Exception =>

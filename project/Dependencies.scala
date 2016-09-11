@@ -15,17 +15,13 @@ object Version {
   final val Scaldi                   = "0.5.7"
   final val Csv                      = "0.1.11"
   final val ScalaTest                = "2.2.6"
-  final val Slick                    = "3.1.1"
-  final val SlickPG                  = "0.14.1"
-  final val HikariCP                 = "2.4.6"
-  final val Postgresql               = "9.4.1208"
-  final val Flyway                   = "4.0.3"
+  final val LdapSDK                  = "3.1.1"
 }
 
 object Library {
   val typesafeConfig           = "com.typesafe"               %  "config"                               % Version.TypesafeConfig
   val slf4j                    = "org.slf4j"                  %  "slf4j-api"                            % Version.Slf4J
-  val logback                  = "ch.qos.logback"             % "logback-classic"                       % Version.Logback
+  val logback                  = "ch.qos.logback"             %  "logback-classic"                      % Version.Logback
   val scalaLogging             = "com.typesafe.scala-logging" %% "scala-logging"                        % Version.ScalaLogging
   val akkaActor                = "com.typesafe.akka"          %% "akka-actor"                           % Version.Akka
   val akkaSlf4j                = "com.typesafe.akka"          %% "akka-slf4j"                           % Version.Akka
@@ -47,10 +43,5 @@ object Library {
   val csv                      = "com.nrinaudo"               %% "kantan.csv"                           % Version.Csv
   val scalaTest                = "org.scalatest"              %% "scalatest"                            % Version.ScalaTest
   val akkaTestKit              = "com.typesafe.akka"          %% "akka-testkit"                         % Version.Akka
-  val slick                    = "com.typesafe.slick"         %% "slick"                                % Version.Slick
-  val slickHikariCP            = "com.typesafe.slick"         %% "slick-hikaricp"                       % Version.Slick
-  val slickPG                  = "com.github.tminglei"        %% "slick-pg"                             % Version.SlickPG
-  val hikariCP                 = "com.zaxxer"                 % "HikariCP"                              % Version.HikariCP
-  val postgresql               = "org.postgresql"             % "postgresql"                            % Version.Postgresql
-  val flyway                   = "org.flywaydb"               % "flyway-core"                           % Version.Flyway
+  val ldap                     = "com.unboundid"              %  "unboundid-ldapsdk"                    % Version.LdapSDK
 }
